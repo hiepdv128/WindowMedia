@@ -15,4 +15,5 @@ E:\Source\WindowMedia\WindowMedia\bin\Debug\Interop.WMPLib.dll
 E:\Source\WindowMedia\WindowMedia\bin\Debug\AxInterop.WMPLib.dll
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.exe
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.pdb
-E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.Form1.resources
+E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.Test.resources
+E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.UserControl1.resources

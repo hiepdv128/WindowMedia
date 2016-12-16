@@ -16,7 +16,7 @@ namespace WindowMedia
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimpleMedia());
+            Application.Run(new Test());
         }
     }
 }
