@@ -16,5 +16,11 @@ namespace WindowMedia
         {
             InitializeComponent();
         }
+
+        private void btnSignUp_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            SignUp.;
+        }
     }
 }

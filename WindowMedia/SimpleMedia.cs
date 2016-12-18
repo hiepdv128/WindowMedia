@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowMedia
@@ -17,28 +10,34 @@ namespace WindowMedia
             InitializeComponent();
         }
 
-        private void btnLoadMusic_Click(object sender, EventArgs e)
-        {
-            DialogResult result = this.openFileDialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                lbMusics.DataSource = openFileDialog.FileNames;
-            }
-            
-        }
-
-        private void lbMusics_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            windowMedia.URL = lbMusics.SelectedItem.ToString();
-            windowMedia.Ctlcontrols.play();
-        }
-
         private void lbMusics_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
                 contextMenu.Show(e.Location);
             }
+        }
+
+        private void lbMusics_DoubleClick(object sender, EventArgs e)
+        {
+            
+//            windowMedia.URL = lbMusics.SelectedItem.ToString();
+            windowMedia.URL = "http://api.mp3.zing.vn/api/mobile/source/song/LGJGTLGNQNNLQDJTVDGTDGLG";
+
+            windowMedia.Ctlcontrols.play();
+        }
+
+        private void SimpleMedia_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.O && e.Control)
+            {
+                openNewFile.ShowDialog();
+            }
+
+            if (e.KeyCode == Keys.F && e.Control == true)
+                e.Handled = true;
+
         }
 
 

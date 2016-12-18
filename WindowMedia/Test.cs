@@ -38,7 +38,7 @@ namespace WindowMedia
             WebClient webclient = new WebClient();
             webclient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
             webclient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            webclient.DownloadFileAsync(new Uri(downloadUrl), Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + fileName + ".mp3");
+            webclient.DownloadFileAsync(new Uri(downloadUrl), Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" +fileName + ".mp3");
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
