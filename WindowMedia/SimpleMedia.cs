@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
+using unirest_net.http;
+using WMPLib;
 
 namespace WindowMedia
 {
@@ -15,6 +20,14 @@ namespace WindowMedia
         private Dictionary<string, string> FavoriteVideos { get; set; }
         private List<string> HistoryMusicPlayed { get; set; }
         private List<string> HistoryVideoPlayed { get; set; }
+        private string tabTag;
+
+        private class TAG
+        {
+            public static string MUSIC = "music";
+            public static string VIDEO = "video";
+            public static string ZING = "zing";
+        }
 
         public SimpleMedia()
         {
@@ -71,17 +84,17 @@ namespace WindowMedia
                         continue;
                     }
                     CurrentMusicPlayList.Add(kv.Key, kv.Value);
-                    windowMedia.currentPlaylist.appendItem(windowMedia.mediaCollection.add(kv.Value));
                 }
 
                 lbxMusics.Items.Clear();
                 lbxMusics.Items.AddRange(Enumerable.ToArray(CurrentMusicPlayList.Keys));
+                lbxMusics.Sorted = true;
                 return;
             }
 
             if (tabControl.SelectedTab == tabVideo)
             {
-                openFileDialog.Filter = @"Video|*.mp4";
+                openFileDialog.Filter = @"MP4|*.mp4|AVI|*.avi";
                 openFileDialog.FileName = "Video";
                 openFileDialog.ShowDialog();
 
@@ -104,6 +117,11 @@ namespace WindowMedia
 
         private void lbxMusics_DoubleClick(object sender, EventArgs e)
         {
+            if (!tabTag.Equals(TAG.MUSIC))
+            {
+                windowMedia.currentPlaylist.clear();
+            }
+
             if (lbxMusics.SelectedItem != null)
             {
                 this.PlayMedia(CurrentMusicPlayList[lbxMusics.SelectedItem.ToString()]);
@@ -157,14 +175,24 @@ namespace WindowMedia
 
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            windowMedia.settings.setMode("shuffle", true);
             if (lbxMusics.SelectedItems.Count > 0)
+            {
+                if (lbxMusics.SelectedItems.Count == 1)
+                {
+                    IWMPMedia mediaInserted =
+                        windowMedia.mediaCollection.add(CurrentMusicPlayList[lbxMusics.SelectedItem.ToString()]);
+                    windowMedia.Ctlcontrols.playItem(mediaInserted);
+                    return;
+                }
 
                 foreach (var musicsSelectedItem in lbxMusics.SelectedItems)
                 {
                     windowMedia.currentPlaylist.appendItem(
-                        windowMedia.mediaCollection.add(CurrentMusicPlayList[lbxMusics.SelectedItem.ToString()]));
+                        windowMedia.mediaCollection.add(CurrentMusicPlayList[musicsSelectedItem.ToString()]));
+                    windowMedia.Ctlcontrols.play();
                 }
-            lbxMusics.ClearSelected();
+            }
         }
 
         private void addToFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -242,6 +270,164 @@ namespace WindowMedia
                 Process.Start("explorer.exe", directory);
                 lbxMusicFavorites.ClearSelected();
             }
+        }
+
+        private void playVideoMenu_Click(object sender, EventArgs e)
+        {
+            windowMedia.settings.setMode("shuffle", true);
+            if (lbxVideo.SelectedItems.Count > 0)
+            {
+                if (lbxVideo.SelectedItems.Count == 1)
+                {
+                    IWMPMedia mediaInserted =
+                        windowMedia.mediaCollection.add(CurrentMusicPlayList[lbxVideo.SelectedItem.ToString()]);
+                    windowMedia.Ctlcontrols.playItem(mediaInserted);
+                    return;
+                }
+
+                foreach (var videoSelectedItem in lbxVideo.SelectedItems)
+                {
+                    windowMedia.currentPlaylist.appendItem(
+                        windowMedia.mediaCollection.add(CurrentMusicPlayList[videoSelectedItem.ToString()]));
+                    windowMedia.Ctlcontrols.play();
+                }
+            }
+        }
+
+        private void addFavoriteMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideo.SelectedItems.Count > 0)
+
+                foreach (var videoSelectedItem in lbxVideo.SelectedItems)
+                {
+                    if (lbxVideoFavorite.Items.Contains(videoSelectedItem.ToString()))
+                    {
+                        continue;
+                    }
+
+                    lbxVideoFavorite.Items.Add(videoSelectedItem);
+                }
+            lbxVideo.ClearSelected();
+        }
+
+        private void removeItemVideoMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideo.SelectedItems.Count > 0)
+            {
+                foreach (string videoSelectedItem in lbxVideo.SelectedItems.OfType<String>().ToList())
+                {
+                    lbxVideo.Items.Remove(videoSelectedItem);
+                    CurrentMusicPlayList.Remove(videoSelectedItem);
+                }
+                lbxVideo.ClearSelected();
+            }
+        }
+
+        private void showFolderMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideo.SelectedItem != null)
+            {
+                string directory = Path.GetDirectoryName(CurrentMusicPlayList[lbxVideo.SelectedItem.ToString()]);
+                Process.Start("explorer.exe", directory);
+                lbxVideo.ClearSelected();
+            }
+        }
+
+        private void addCurrentPlayMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideoFavorite.SelectedItems.Count > 0)
+            {
+                foreach (var selectedItem in lbxVideoFavorite.SelectedItems)
+                {
+                    if (lbxVideo.Items.Contains(selectedItem))
+                    {
+                        continue;
+                    }
+                    lbxVideo.Items.Add(selectedItem.ToString());
+                }
+                lbxVideoFavorite.ClearSelected();
+            }
+        }
+
+        private void removeFavoriteMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideoFavorite.SelectedItems.Count > 0)
+            {
+                foreach (var selectedItem in lbxVideoFavorite.SelectedItems.OfType<String>().ToList())
+                {
+                    lbxVideoFavorite.Items.Remove(selectedItem);
+                }
+                lbxVideoFavorite.ClearSelected();
+            }
+        }
+
+        private void showFolderFavoriteMenu_Click(object sender, EventArgs e)
+        {
+            if (lbxVideoFavorite.SelectedItem != null)
+            {
+                string directory = Path.GetDirectoryName(CurrentMusicPlayList[lbxVideoFavorite.SelectedItem.ToString()]);
+                Process.Start("explorer.exe", directory);
+                lbxVideoFavorite.ClearSelected();
+            }
+        }
+
+        private void btnPlayZingMp3_Click(object sender, EventArgs e)
+        {
+            String baseUrl = txtLinkZingMp3.Text.Trim();
+            baseUrl = baseUrl.Replace(".html", "");
+            String musicId = baseUrl.Substring(baseUrl.LastIndexOf("/") + 1);
+
+            HttpResponse<String> response = Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
+                .asString();
+
+            JObject jsonResponse = JObject.Parse(response.Body);
+            String fileName = jsonResponse.GetValue("title").Value<String>();
+
+            JToken token = jsonResponse.GetValue("source");
+            String downloadUrl = JObject.Parse(token.ToString()).GetValue("320").Value<String>();
+
+            windowMedia.URL = downloadUrl;
+            windowMedia.Ctlcontrols.play();
+        }
+
+        private void Completed(object sender, AsyncCompletedEventArgs e)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic));
+            lbxDownLoad.Items.Clear();
+            lbxDownLoad.Items.AddRange(directoryInfo.GetFiles("*.mp3"));
+
+            progressDownload.Value = 0;
+            progressDownload.Hide();
+
+        }
+
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progressDownload.Value = e.ProgressPercentage;
+        }
+
+        private void linkDownloadZingMp3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            String baseUrl = txtLinkZingMp3.Text.Trim();
+            baseUrl = baseUrl.Replace(".html", "");
+            String musicId = baseUrl.Substring(baseUrl.LastIndexOf("/") + 1);
+
+            HttpResponse<String> response = Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
+                .asString();
+
+            JObject jsonResponse = JObject.Parse(response.Body);
+            String fileName = jsonResponse.GetValue("title").Value<String>();
+
+            JToken token = jsonResponse.GetValue("source");
+            String downloadUrl = JObject.Parse(token.ToString()).GetValue("320").Value<String>();
+
+            progressDownload.Show();
+
+            WebClient webclient = new WebClient();
+            webclient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+            webclient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+            webclient.DownloadFileAsync(new Uri(downloadUrl), Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3");
+
         }
     }
 }
