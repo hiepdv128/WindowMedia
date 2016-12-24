@@ -14,9 +14,10 @@ E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.SignIn.resources
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.SignUp.resources
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.SimpleMedia.resources
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.Test.resources
-E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.UserControl1.resources
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.ZingMp3.resources
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.csproj.GenerateResource.Cache
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.exe
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.pdb
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.csprojResolveAssemblyReference.cache
+E:\Source\WindowMedia\WindowMedia\bin\Debug\SqlBulkTools.dll
+E:\Source\WindowMedia\WindowMedia\bin\Debug\SqlBulkTools.xml

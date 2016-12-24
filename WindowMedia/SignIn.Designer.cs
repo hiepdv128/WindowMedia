@@ -28,27 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUsernameSingIn = new System.Windows.Forms.TextBox();
+            this.txtPasswordSingIn = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSignUp = new System.Windows.Forms.Button();
             this.btnSignIn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // txtUsername
+            // txtUsernameSingIn
             // 
-            this.txtUsername.Location = new System.Drawing.Point(197, 61);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(100, 20);
-            this.txtUsername.TabIndex = 0;
+            this.txtUsernameSingIn.Location = new System.Drawing.Point(197, 61);
+            this.txtUsernameSingIn.Name = "txtUsernameSingIn";
+            this.txtUsernameSingIn.Size = new System.Drawing.Size(100, 20);
+            this.txtUsernameSingIn.TabIndex = 0;
             // 
-            // txtPassword
+            // txtPasswordSingIn
             // 
-            this.txtPassword.Location = new System.Drawing.Point(197, 108);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(100, 20);
-            this.txtPassword.TabIndex = 1;
+            this.txtPasswordSingIn.Location = new System.Drawing.Point(197, 108);
+            this.txtPasswordSingIn.Name = "txtPasswordSingIn";
+            this.txtPasswordSingIn.Size = new System.Drawing.Size(100, 20);
+            this.txtPasswordSingIn.TabIndex = 1;
+            this.txtPasswordSingIn.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -86,18 +87,19 @@
             this.btnSignIn.TabIndex = 3;
             this.btnSignIn.Text = "Đăng nhập";
             this.btnSignIn.UseVisualStyleBackColor = true;
+            this.btnSignIn.Click += new System.EventHandler(this.btnSignIn_Click);
             // 
             // SignIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 276);
+            this.ClientSize = new System.Drawing.Size(403, 246);
             this.Controls.Add(this.btnSignIn);
             this.Controls.Add(this.btnSignUp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.txtUsername);
+            this.Controls.Add(this.txtPasswordSingIn);
+            this.Controls.Add(this.txtUsernameSingIn);
             this.Name = "SignIn";
             this.Text = "SignIn";
             this.ResumeLayout(false);
@@ -107,8 +109,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUsernameSingIn;
+        private System.Windows.Forms.TextBox txtPasswordSingIn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSignUp;

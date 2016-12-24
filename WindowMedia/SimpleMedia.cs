@@ -22,6 +22,8 @@ namespace WindowMedia
         private List<string> HistoryVideoPlayed { get; set; }
         private string tabTag;
 
+        private ResourceTransporter resourceTransporter;
+
         private class TAG
         {
             public static string MUSIC = "music";
@@ -32,6 +34,9 @@ namespace WindowMedia
         public SimpleMedia()
         {
             InitializeComponent();
+            tabTag = TAG.MUSIC;
+
+            resourceTransporter = new ResourceTransporter();
 
             CurrentMusicPlayList = new Dictionary<string, string>();
             CurrentVideoPlayList = new Dictionary<string, string>();
@@ -429,5 +434,8 @@ namespace WindowMedia
             webclient.DownloadFileAsync(new Uri(downloadUrl), Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3");
 
         }
+
+
     }
+
 }
