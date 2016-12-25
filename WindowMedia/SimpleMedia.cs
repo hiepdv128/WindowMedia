@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,16 +17,15 @@ namespace WindowMedia
     public partial class SimpleMedia : Form
     {
         private Dictionary<string, string> CurrentMusicPlayList { get; set; }
-        private Dictionary<string, string> FavoriteMusics { get; set; }
         private Dictionary<string, string> CurrentVideoPlayList { get; set; }
-        private Dictionary<string, string> FavoriteVideos { get; set; }
         private List<string> HistoryMusicPlayed { get; set; }
         private List<string> HistoryVideoPlayed { get; set; }
         private string tabTag;
-        private string[] ExtentionSupports = { ".mp3", ".mp4", ".avi", ".mwn", ".3gp", ".mkv" };
+        private string[] ExtentionSupports = {".mp3", ".mp4", ".avi", ".mwn", ".3gp", ".mkv"};
 
         private ResourceTransporter resourceTransporter;
         private string username = "test";
+        private string fileDownload;
 
         private class TAG
         {
@@ -42,17 +43,15 @@ namespace WindowMedia
 
             CurrentMusicPlayList = new Dictionary<string, string>();
             CurrentVideoPlayList = new Dictionary<string, string>();
-            FavoriteMusics = new Dictionary<string, string>();
-            FavoriteVideos = new Dictionary<string, string>();
             HistoryMusicPlayed = new List<string>();
             HistoryVideoPlayed = new List<string>();
 
-            lblUsername.Text = this.username;
         }
 
-        public void setUsername(string username)
+        public void setUser(string username)
         {
             this.username = username;
+            lblName.Text = this.username;
         }
 
         private void lbMusics_MouseClick(object sender, MouseEventArgs e)
@@ -89,6 +88,7 @@ namespace WindowMedia
 
                 Dictionary<string, string> newFiles = openFileDialog.FileNames
                     .ToList()
+                    .Where(filePath => File.Exists(filePath))
                     .ToDictionary(Path.GetFileName, filePath => filePath);
 
                 foreach (var kv in newFiles)
@@ -108,12 +108,13 @@ namespace WindowMedia
 
             if (tabControl.SelectedTab == tabVideo)
             {
-                openFileDialog.Filter = @"MP4|*.mp4|AVI|*.avi";
+                openFileDialog.Filter = @"Video|*.mp4;*.avi;*.mkv;*.mwn";
                 openFileDialog.FileName = "Video";
                 openFileDialog.ShowDialog();
 
                 Dictionary<string, string> newFiles = openFileDialog.FileNames
                     .ToList()
+                    .Where(filePath => File.Exists(filePath))
                     .ToDictionary(Path.GetFileName, filePath => filePath);
 
                 foreach (var kv in newFiles)
@@ -131,34 +132,45 @@ namespace WindowMedia
 
         private void lbxMusics_DoubleClick(object sender, EventArgs e)
         {
+            if (lbxMusics.SelectedItem == null)
+            {
+                return;
+            }
+
             if (!tabTag.Equals(TAG.MUSIC))
             {
                 windowMedia.currentPlaylist.clear();
             }
 
-            if (lbxMusics.SelectedItem != null)
-            {
-                this.PlayMedia(CurrentMusicPlayList[lbxMusics.SelectedItem.ToString()]);
+            tabTag = TAG.MUSIC;
+            this.PlayMedia(CurrentMusicPlayList[lbxMusics.SelectedItem.ToString()]);
 
-                insertHistory(HistoryMusicPlayed, lbxMusics.SelectedItem.ToString());
-                lbxMusics.ClearSelected();
-            }
+            insertHistory(HistoryMusicPlayed, lbxMusics.SelectedItem.ToString());
+            lbxMusics.ClearSelected();
         }
 
         private void lbxVideo_DoubleClick(object sender, EventArgs e)
         {
-            if (lbxVideo.SelectedItem != null)
+            if (lbxVideo.SelectedItem == null)
             {
-                this.PlayMedia(CurrentVideoPlayList[lbxVideo.SelectedItem.ToString()]);
-
-                insertHistory(HistoryVideoPlayed, lbxVideo.SelectedItem.ToString());
-                lbxVideo.ClearSelected();
+                return;
             }
+
+            if (!tabTag.Equals(TAG.VIDEO))
+            {
+                windowMedia.currentPlaylist.clear();
+            }
+
+            tabTag = TAG.VIDEO;
+
+            this.PlayMedia(CurrentVideoPlayList[lbxVideo.SelectedItem.ToString()]);
+
+            insertHistory(HistoryVideoPlayed, lbxVideo.SelectedItem.ToString());
+            lbxVideo.ClearSelected();
         }
 
         private void PlayMedia(string path)
         {
-            windowMedia.playlistCollection.remove(windowMedia.currentPlaylist);
             windowMedia.URL = path;
             windowMedia.Ctlcontrols.play();
         }
@@ -213,7 +225,7 @@ namespace WindowMedia
         {
             if (lbxMusics.SelectedItems.Count > 0)
 
-                foreach (var musicsSelectedItem in lbxMusics.SelectedItems)
+                foreach (string musicsSelectedItem in lbxMusics.SelectedItems)
                 {
                     if (lbxMusicFavorites.Items.Contains(musicsSelectedItem.ToString()))
                     {
@@ -229,10 +241,11 @@ namespace WindowMedia
         {
             if (lbxMusics.SelectedItems.Count > 0)
             {
-                foreach (string musicsSelectedItem in lbxMusics.SelectedItems.OfType<String>().ToList())
+                foreach (string musicSelectedItem in lbxMusics.SelectedItems.OfType<String>().ToList())
                 {
-                    lbxMusics.Items.Remove(musicsSelectedItem);
-                    CurrentMusicPlayList.Remove(musicsSelectedItem);
+                    lbxMusics.Items.Remove(musicSelectedItem);
+                    lbxMusicFavorites.Items.Remove(musicSelectedItem);
+                    CurrentMusicPlayList.Remove(musicSelectedItem);
                 }
                 lbxMusics.ClearSelected();
             }
@@ -294,7 +307,7 @@ namespace WindowMedia
                 if (lbxVideo.SelectedItems.Count == 1)
                 {
                     IWMPMedia mediaInserted =
-                        windowMedia.mediaCollection.add(CurrentMusicPlayList[lbxVideo.SelectedItem.ToString()]);
+                        windowMedia.mediaCollection.add(CurrentVideoPlayList[lbxVideo.SelectedItem.ToString()]);
                     windowMedia.Ctlcontrols.playItem(mediaInserted);
                     return;
                 }
@@ -302,7 +315,7 @@ namespace WindowMedia
                 foreach (var videoSelectedItem in lbxVideo.SelectedItems)
                 {
                     windowMedia.currentPlaylist.appendItem(
-                        windowMedia.mediaCollection.add(CurrentMusicPlayList[videoSelectedItem.ToString()]));
+                        windowMedia.mediaCollection.add(CurrentVideoPlayList[videoSelectedItem.ToString()]));
                     windowMedia.Ctlcontrols.play();
                 }
             }
@@ -312,7 +325,7 @@ namespace WindowMedia
         {
             if (lbxVideo.SelectedItems.Count > 0)
 
-                foreach (var videoSelectedItem in lbxVideo.SelectedItems)
+                foreach (string videoSelectedItem in lbxVideo.SelectedItems)
                 {
                     if (lbxVideoFavorite.Items.Contains(videoSelectedItem.ToString()))
                     {
@@ -331,7 +344,8 @@ namespace WindowMedia
                 foreach (string videoSelectedItem in lbxVideo.SelectedItems.OfType<String>().ToList())
                 {
                     lbxVideo.Items.Remove(videoSelectedItem);
-                    CurrentMusicPlayList.Remove(videoSelectedItem);
+                    lbxVideoFavorite.Items.Remove(videoSelectedItem);
+                    CurrentVideoPlayList.Remove(videoSelectedItem);
                 }
                 lbxVideo.ClearSelected();
             }
@@ -385,10 +399,8 @@ namespace WindowMedia
             }
         }
 
-        private void btnPlayZingMp3_Click(object sender, EventArgs e)
+        private void btnPlayOnline_Click(object sender, EventArgs e)
         {
-            tabTag = TAG.ONLINE;
-
             String baseUrl = txtLink.Text.Trim();
 
             if (!baseUrl.Contains("mp3.zing.vn") && !ExtentionSupports.Contains(Path.GetExtension(baseUrl)))
@@ -396,6 +408,10 @@ namespace WindowMedia
                 MessageBox.Show("Url nhập không hợp lệ, vui lòng tìm url khác");
                 return;
             }
+
+
+            lbxPlayOnlineHistory.Items.Remove(baseUrl);
+            lbxPlayOnlineHistory.Items.Insert(0, baseUrl);
 
             if (baseUrl.Contains("mp3.zing.vn"))
             {
@@ -418,7 +434,8 @@ namespace WindowMedia
             String musicId = zingUrl.Substring(zingUrl.LastIndexOf("/") + 1);
 
             HttpResponse<String> response =
-                Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
+                Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId +
+                            "%22}")
                     .asString();
 
             JObject jsonResponse = JObject.Parse(response.Body);
@@ -433,9 +450,7 @@ namespace WindowMedia
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic));
-            lbxDownLoad.Items.Clear();
-            lbxDownLoad.Items.AddRange(directoryInfo.GetFiles("*.mp3"));
+            MessageBox.Show("Download Complete!");
 
             progressDownload.Value = 0;
             progressDownload.Hide();
@@ -463,7 +478,6 @@ namespace WindowMedia
             }
 
             downloadFromUnknowSource(baseUrl);
-
         }
 
 
@@ -482,24 +496,285 @@ namespace WindowMedia
 
             JToken token = jsonResponse.GetValue("source");
             String downloadUrl = JObject.Parse(token.ToString()).GetValue("320").Value<String>();
+            String targetUrl = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3";
 
             progressDownload.Show();
 
             WebClient webclient = new WebClient();
             webclient.DownloadFileCompleted += Completed;
             webclient.DownloadProgressChanged += ProgressChanged;
-            webclient.DownloadFileAsync(new Uri(downloadUrl),
-                Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3");
+            webclient.DownloadFileAsync(new Uri(downloadUrl), targetUrl);
+
+            lbxDownLoad.Items.Add(targetUrl);
         }
 
         private void downloadFromUnknowSource(string url)
         {
+            string targetUrl = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "/" +
+                               Path.GetFileName(url);
             WebClient webclient = new WebClient();
             webclient.DownloadFileCompleted += Completed;
             webclient.DownloadProgressChanged += ProgressChanged;
-            webclient.DownloadFileAsync(new Uri(url),
-                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "/" + Path.GetFileName(url));
+            webclient.DownloadFileAsync(new Uri(url), targetUrl);
 
+            lbxDownLoad.Items.Add(targetUrl);
+        }
+
+        private void SimpleMedia_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string deletePlaylistQuery = String.Format("DELETE FROM PlaylistItems WHERE username='{0}'", username);
+            string deleteResourceQuery = String.Format("DELETE FROM Resources WHERE username='{0}'", username);
+
+            new SqlCommand(deletePlaylistQuery, resourceTransporter.GetConnection()).ExecuteScalar();
+            new SqlCommand(deleteResourceQuery, resourceTransporter.GetConnection()).ExecuteScalar();
+
+            this.savePlayListMusic();
+            this.saveFavoriteMusic();
+            this.savePlayListVideo();
+            this.saveFavoriteVideo();
+            this.saveHistoryDownloaded();
+        }
+
+        private void savePlayListMusic()
+        {
+            DataTable resourceMusics = new DataTable();
+            DataColumn nameColumn = new DataColumn("Name", typeof(String));
+            nameColumn.Unique = true;
+            resourceMusics.Columns.Add(nameColumn);
+            resourceMusics.Columns.Add(new DataColumn("Url", typeof(String)));
+            resourceMusics.Columns.Add(new DataColumn("Type", typeof(String)));
+            resourceMusics.Columns.Add(new DataColumn("Username", typeof(String)));
+
+            foreach (KeyValuePair<string, string> kv in CurrentMusicPlayList)
+            {
+                DataRow newRow = resourceMusics.NewRow();
+                newRow["name"] = kv.Key;
+                newRow["url"] = kv.Value;
+                newRow["type"] = "Music";
+                newRow["username"] = username;
+
+                resourceMusics.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection());
+            bulkInsert.DestinationTableName = "Resources";
+            try
+            {
+                bulkInsert.WriteToServer(resourceMusics);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+        }
+
+        private void savePlayListVideo()
+        {
+            DataTable resourceVideos = new DataTable();
+
+            DataColumn nameColumn = new DataColumn("Name", typeof(String));
+            nameColumn.Unique = true;
+            resourceVideos.Columns.Add(nameColumn);
+            resourceVideos.Columns.Add(new DataColumn("Url", typeof(String)));
+            resourceVideos.Columns.Add(new DataColumn("Type", typeof(String)));
+            resourceVideos.Columns.Add(new DataColumn("Username", typeof(String)));
+
+            foreach (KeyValuePair<string, string> kv in CurrentVideoPlayList)
+            {
+                DataRow newRow = resourceVideos.NewRow();
+                newRow["name"] = kv.Key;
+                newRow["url"] = kv.Value;
+                newRow["type"] = "Video";
+                newRow["username"] = username;
+
+                resourceVideos.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection());
+            bulkInsert.DestinationTableName = "Resources";
+            try
+            {
+                bulkInsert.WriteToServer(resourceVideos);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+        }
+
+        private void saveFavoriteMusic()
+        {
+            DataTable tbFavoriteMusics = new DataTable();
+
+            tbFavoriteMusics.Columns.Add(new DataColumn("id", typeof(int)));
+            tbFavoriteMusics.Columns.Add(new DataColumn("ResourceName", typeof(String)));
+            tbFavoriteMusics.Columns.Add(new DataColumn("PlayList", typeof(String)));
+            tbFavoriteMusics.Columns.Add(new DataColumn("UserName", typeof(String)));
+
+            foreach (string favoriteMusic in lbxMusicFavorites.Items)
+            {
+                DataRow newRow = tbFavoriteMusics.NewRow();
+                newRow["id"] = DBNull.Value;
+                newRow["ResourceName"] = favoriteMusic;
+                newRow["Playlist"] = "Music";
+                newRow["UserName"] = username;
+
+                tbFavoriteMusics.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection().ConnectionString);
+            bulkInsert.DestinationTableName = "PlayListItems";
+            try
+            {
+                bulkInsert.WriteToServer(tbFavoriteMusics);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+            }
+        }
+
+        private void saveFavoriteVideo()
+        {
+            DataTable tbFavoriteVideo = new DataTable();
+
+            tbFavoriteVideo.Columns.Add(new DataColumn("id", typeof(int)));
+            tbFavoriteVideo.Columns.Add(new DataColumn("ResourceName", typeof(String)));
+            tbFavoriteVideo.Columns.Add(new DataColumn("PlayList", typeof(String)));
+            tbFavoriteVideo.Columns.Add(new DataColumn("UserName", typeof(String)));
+
+            foreach (string favoriteMusic in lbxVideoFavorite.Items)
+            {
+                DataRow newRow = tbFavoriteVideo.NewRow();
+                newRow["id"] = DBNull.Value;
+                newRow["ResourceName"] = favoriteMusic;
+                newRow["Playlist"] = "Video";
+                newRow["UserName"] = username;
+
+                tbFavoriteVideo.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection().ConnectionString);
+            bulkInsert.DestinationTableName = "PlayListItems";
+            try
+            {
+                bulkInsert.WriteToServer(tbFavoriteVideo);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+            }
+        }
+
+
+        private void saveHistoryDownloaded()
+        {
+            DataTable tbHistory = new DataTable();
+
+            tbHistory.Columns.Add(new DataColumn("Name", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Url", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Type", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Username", typeof(String)));
+
+            foreach (string itemDownloaded in lbxDownLoad.Items)
+            {
+                DataRow newRow = tbHistory.NewRow();
+                newRow["Name"] = Path.GetFileName(itemDownloaded);
+                newRow["Url"] = itemDownloaded;
+                newRow["Type"] = "Download";
+                newRow["UserName"] = username;
+
+                tbHistory.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection().ConnectionString);
+            bulkInsert.DestinationTableName = "Resources";
+            try
+            {
+                bulkInsert.WriteToServer(tbHistory);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+            }
+        }
+
+        private void saveHistoryPlayed()
+        {
+            DataTable tbHistory = new DataTable();
+
+            tbHistory.Columns.Add(new DataColumn("Name", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Url", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Type", typeof(String)));
+            tbHistory.Columns.Add(new DataColumn("Username", typeof(String)));
+
+            foreach (string playedOnline in lbxPlayOnlineHistory.Items)
+            {
+                DataRow newRow = tbHistory.NewRow();
+                newRow["Name"] = Path.GetFileName(playedOnline);
+                newRow["Url"] = playedOnline;
+                newRow["Type"] = "PlayedOnline";
+                newRow["UserName"] = username;
+
+                tbHistory.Rows.Add(newRow);
+            }
+
+            SqlBulkCopy bulkInsert = new SqlBulkCopy(resourceTransporter.GetConnection().ConnectionString);
+            bulkInsert.DestinationTableName = "Resources";
+            try
+            {
+                bulkInsert.WriteToServer(tbHistory);
+                bulkInsert.Close();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.StackTrace);
+            }
+        }
+
+        private void lbxPlayOnlineHistory_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbxPlayOnlineHistory.SelectedItem == null)
+            {
+                return;
+            }
+
+            txtLink.Text = lbxPlayOnlineHistory.SelectedItem.ToString();
+            lbxPlayOnlineHistory.ClearSelected();
+        }
+
+        private void lbxDownLoad_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbxDownLoad.SelectedItem == null)
+            {
+                return;
+            }
+
+            windowMedia.currentPlaylist.clear();
+            windowMedia.URL = lbxDownLoad.SelectedItem.ToString();
+            windowMedia.Ctlcontrols.play();
+        }
+
+        private void SimpleMedia_Load(object sender, EventArgs e)
+        {
+            CurrentMusicPlayList = resourceTransporter.readFromResources("Music", username);
+            CurrentVideoPlayList = resourceTransporter.readFromResources("Video", username);
+            Dictionary<string, string> downloadItems = resourceTransporter.readFromResources("Download", username);
+            Dictionary<string, string> playedOnline = resourceTransporter.readFromResources("PlayedOnline", username);
+
+            lbxMusics.Items.AddRange(CurrentMusicPlayList.Keys.ToArray());
+            lbxVideo.Items.AddRange(CurrentVideoPlayList.Keys.ToArray());
+
+            lbxMusicFavorites.Items.AddRange(resourceTransporter.readFromPlayListItem("Music", username).ToArray());
+            lbxVideoFavorite.Items.AddRange(resourceTransporter.readFromPlayListItem("Video", username).ToArray());
+
+            lbxDownLoad.Items.AddRange(downloadItems.Values.ToArray());
+            lbxPlayOnlineHistory.Items.AddRange(playedOnline.Values.ToArray());
         }
     }
 }

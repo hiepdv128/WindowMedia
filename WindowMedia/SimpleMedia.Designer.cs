@@ -68,7 +68,7 @@
             this.lbxDownLoad = new System.Windows.Forms.ListBox();
             this.lbxPlayOnlineHistory = new System.Windows.Forms.ListBox();
             this.btnOpen = new System.Windows.Forms.Button();
-            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
             this.historyPlayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,7 +124,7 @@
             this.btnPlayZingMp3.TabIndex = 9;
             this.btnPlayZingMp3.Text = "Play";
             this.btnPlayZingMp3.UseVisualStyleBackColor = true;
-            this.btnPlayZingMp3.Click += new System.EventHandler(this.btnPlayZingMp3_Click);
+            this.btnPlayZingMp3.Click += new System.EventHandler(this.btnPlayOnline_Click);
             // 
             // tabControl
             // 
@@ -133,10 +133,10 @@
             this.tabControl.Controls.Add(this.tabVideo);
             this.tabControl.Controls.Add(this.tabOnline);
             this.tabControl.ItemSize = new System.Drawing.Size(100, 30);
-            this.tabControl.Location = new System.Drawing.Point(912, 51);
+            this.tabControl.Location = new System.Drawing.Point(912, 57);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(305, 595);
+            this.tabControl.Size = new System.Drawing.Size(305, 589);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 10;
             // 
@@ -185,7 +185,7 @@
             this.tabMusic.Location = new System.Drawing.Point(4, 34);
             this.tabMusic.Name = "tabMusic";
             this.tabMusic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMusic.Size = new System.Drawing.Size(297, 557);
+            this.tabMusic.Size = new System.Drawing.Size(297, 551);
             this.tabMusic.TabIndex = 0;
             this.tabMusic.Text = "Music";
             this.tabMusic.UseVisualStyleBackColor = true;
@@ -207,10 +207,10 @@
             // 
             this.lbxMusicFavorites.ContextMenuStrip = this.favoriteMusicMenu;
             this.lbxMusicFavorites.FormattingEnabled = true;
-            this.lbxMusicFavorites.Location = new System.Drawing.Point(6, 328);
+            this.lbxMusicFavorites.Location = new System.Drawing.Point(6, 331);
             this.lbxMusicFavorites.Name = "lbxMusicFavorites";
             this.lbxMusicFavorites.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbxMusicFavorites.Size = new System.Drawing.Size(289, 277);
+            this.lbxMusicFavorites.Size = new System.Drawing.Size(289, 212);
             this.lbxMusicFavorites.TabIndex = 0;
             // 
             // favoriteMusicMenu
@@ -250,7 +250,7 @@
             this.tabVideo.Location = new System.Drawing.Point(4, 34);
             this.tabVideo.Name = "tabVideo";
             this.tabVideo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVideo.Size = new System.Drawing.Size(297, 557);
+            this.tabVideo.Size = new System.Drawing.Size(297, 551);
             this.tabVideo.TabIndex = 1;
             this.tabVideo.Text = "Video";
             this.tabVideo.UseVisualStyleBackColor = true;
@@ -259,10 +259,10 @@
             // 
             this.lbxVideoFavorite.ContextMenuStrip = this.favoriteVideoMenu;
             this.lbxVideoFavorite.FormattingEnabled = true;
-            this.lbxVideoFavorite.Location = new System.Drawing.Point(6, 328);
+            this.lbxVideoFavorite.Location = new System.Drawing.Point(6, 313);
             this.lbxVideoFavorite.Name = "lbxVideoFavorite";
             this.lbxVideoFavorite.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbxVideoFavorite.Size = new System.Drawing.Size(289, 277);
+            this.lbxVideoFavorite.Size = new System.Drawing.Size(289, 238);
             this.lbxVideoFavorite.TabIndex = 1;
             // 
             // favoriteVideoMenu
@@ -299,10 +299,10 @@
             // 
             this.lbxVideo.ContextMenuStrip = this.currentPlayVideoMenu;
             this.lbxVideo.FormattingEnabled = true;
-            this.lbxVideo.Location = new System.Drawing.Point(6, 4);
+            this.lbxVideo.Location = new System.Drawing.Point(6, 43);
             this.lbxVideo.Name = "lbxVideo";
             this.lbxVideo.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbxVideo.Size = new System.Drawing.Size(289, 277);
+            this.lbxVideo.Size = new System.Drawing.Size(289, 238);
             this.lbxVideo.TabIndex = 2;
             this.lbxVideo.DoubleClick += new System.EventHandler(this.lbxVideo_DoubleClick);
             // 
@@ -358,7 +358,7 @@
             this.tabOnline.Location = new System.Drawing.Point(4, 34);
             this.tabOnline.Name = "tabOnline";
             this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOnline.Size = new System.Drawing.Size(297, 557);
+            this.tabOnline.Size = new System.Drawing.Size(297, 551);
             this.tabOnline.TabIndex = 2;
             this.tabOnline.Text = "Online";
             this.tabOnline.UseVisualStyleBackColor = true;
@@ -370,6 +370,7 @@
             this.progressDownload.Name = "progressDownload";
             this.progressDownload.Size = new System.Drawing.Size(269, 10);
             this.progressDownload.TabIndex = 13;
+            this.progressDownload.Visible = false;
             // 
             // linkDownloadZingMp3
             // 
@@ -385,42 +386,44 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(7, 58);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 16);
+            this.label2.Size = new System.Drawing.Size(90, 20);
             this.label2.TabIndex = 11;
             this.label2.Text = "History play";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 305);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 327);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 16);
+            this.label1.Size = new System.Drawing.Size(80, 20);
             this.label1.TabIndex = 11;
             this.label1.Text = "Download";
             // 
             // lbxDownLoad
             // 
             this.lbxDownLoad.FormattingEnabled = true;
-            this.lbxDownLoad.Location = new System.Drawing.Point(10, 324);
+            this.lbxDownLoad.Location = new System.Drawing.Point(10, 350);
             this.lbxDownLoad.Name = "lbxDownLoad";
-            this.lbxDownLoad.Size = new System.Drawing.Size(284, 225);
+            this.lbxDownLoad.Size = new System.Drawing.Size(284, 199);
             this.lbxDownLoad.TabIndex = 10;
+            this.lbxDownLoad.DoubleClick += new System.EventHandler(this.lbxDownLoad_DoubleClick);
             // 
             // lbxPlayOnlineHistory
             // 
             this.lbxPlayOnlineHistory.FormattingEnabled = true;
-            this.lbxPlayOnlineHistory.Location = new System.Drawing.Point(9, 77);
+            this.lbxPlayOnlineHistory.Location = new System.Drawing.Point(9, 90);
             this.lbxPlayOnlineHistory.Name = "lbxPlayOnlineHistory";
-            this.lbxPlayOnlineHistory.Size = new System.Drawing.Size(284, 225);
+            this.lbxPlayOnlineHistory.Size = new System.Drawing.Size(284, 212);
             this.lbxPlayOnlineHistory.TabIndex = 10;
+            this.lbxPlayOnlineHistory.DoubleClick += new System.EventHandler(this.lbxPlayOnlineHistory_DoubleClick);
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(1109, 12);
+            this.btnOpen.Location = new System.Drawing.Point(1109, 7);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 12;
@@ -428,14 +431,15 @@
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
-            // lblUsername
+            // lblName
             // 
-            this.lblUsername.AutoSize = true;
-            this.lblUsername.Location = new System.Drawing.Point(933, 17);
-            this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(35, 13);
-            this.lblUsername.TabIndex = 13;
-            this.lblUsername.Text = "label1";
+            this.lblName.AutoSize = true;
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(941, 9);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(61, 24);
+            this.lblName.TabIndex = 13;
+            this.lblName.Text = "Name";
             // 
             // historyPlayMenu
             // 
@@ -469,7 +473,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1217, 646);
-            this.Controls.Add(this.lblUsername);
+            this.Controls.Add(this.lblName);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.windowMedia);
@@ -477,6 +481,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SimpleMedia";
             this.Text = "SimpleMedia";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SimpleMedia_FormClosed);
+            this.Load += new System.EventHandler(this.SimpleMedia_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SimpleMedia_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.windowMedia)).EndInit();
             this.tabControl.ResumeLayout(false);
@@ -509,7 +515,7 @@
         private System.Windows.Forms.ListBox lbxVideoFavorite;
         private System.Windows.Forms.ListBox lbxVideo;
         private System.Windows.Forms.Button btnOpen;
-        private System.Windows.Forms.Label lblUsername;
+        private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.ContextMenuStrip currentPlayMusicMenu;
         private System.Windows.Forms.ListBox lbxMusics;
         private System.Windows.Forms.ToolStripMenuItem playMusicMenuItem;

@@ -46,7 +46,7 @@ namespace WindowMedia
             }
 
             SimpleMedia media = new SimpleMedia();
-            media.setUsername(txtUsernameSingIn.Text);
+            media.setUser(txtUsernameSingIn.Text);
             media.Show();
 
             this.Close();
