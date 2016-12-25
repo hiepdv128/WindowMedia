@@ -33,7 +33,7 @@
             this.windowMedia = new AxWMPLib.AxWindowsMediaPlayer();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnLoadMusic = new System.Windows.Forms.Button();
-            this.txtLinkZingMp3 = new System.Windows.Forms.TextBox();
+            this.txtLink = new System.Windows.Forms.TextBox();
             this.btnPlayZingMp3 = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.currentPlayMusicMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -60,13 +60,13 @@
             this.addFavoriteMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.removeItemVideoMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.showFolderMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabZingMp3 = new System.Windows.Forms.TabPage();
+            this.tabOnline = new System.Windows.Forms.TabPage();
             this.progressDownload = new System.Windows.Forms.ProgressBar();
             this.linkDownloadZingMp3 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lbxDownLoad = new System.Windows.Forms.ListBox();
-            this.lbxZingMp3History = new System.Windows.Forms.ListBox();
+            this.lbxPlayOnlineHistory = new System.Windows.Forms.ListBox();
             this.btnOpen = new System.Windows.Forms.Button();
             this.lblUsername = new System.Windows.Forms.Label();
             this.historyPlayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -81,7 +81,7 @@
             this.tabVideo.SuspendLayout();
             this.favoriteVideoMenu.SuspendLayout();
             this.currentPlayVideoMenu.SuspendLayout();
-            this.tabZingMp3.SuspendLayout();
+            this.tabOnline.SuspendLayout();
             this.historyPlayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,12 +109,12 @@
             this.btnLoadMusic.Text = "Chọn file";
             this.btnLoadMusic.UseVisualStyleBackColor = true;
             // 
-            // txtLinkZingMp3
+            // txtLink
             // 
-            this.txtLinkZingMp3.Location = new System.Drawing.Point(3, 6);
-            this.txtLinkZingMp3.Name = "txtLinkZingMp3";
-            this.txtLinkZingMp3.Size = new System.Drawing.Size(241, 20);
-            this.txtLinkZingMp3.TabIndex = 0;
+            this.txtLink.Location = new System.Drawing.Point(3, 6);
+            this.txtLink.Name = "txtLink";
+            this.txtLink.Size = new System.Drawing.Size(241, 20);
+            this.txtLink.TabIndex = 0;
             // 
             // btnPlayZingMp3
             // 
@@ -131,7 +131,7 @@
             this.tabControl.ContextMenuStrip = this.currentPlayMusicMenu;
             this.tabControl.Controls.Add(this.tabMusic);
             this.tabControl.Controls.Add(this.tabVideo);
-            this.tabControl.Controls.Add(this.tabZingMp3);
+            this.tabControl.Controls.Add(this.tabOnline);
             this.tabControl.ItemSize = new System.Drawing.Size(100, 30);
             this.tabControl.Location = new System.Drawing.Point(912, 51);
             this.tabControl.Name = "tabControl";
@@ -344,24 +344,24 @@
             this.showFolderMenu.Text = "Go to folder";
             this.showFolderMenu.Click += new System.EventHandler(this.showFolderMenu_Click);
             // 
-            // tabZingMp3
+            // tabOnline
             // 
-            this.tabZingMp3.AllowDrop = true;
-            this.tabZingMp3.Controls.Add(this.progressDownload);
-            this.tabZingMp3.Controls.Add(this.linkDownloadZingMp3);
-            this.tabZingMp3.Controls.Add(this.label2);
-            this.tabZingMp3.Controls.Add(this.label1);
-            this.tabZingMp3.Controls.Add(this.lbxDownLoad);
-            this.tabZingMp3.Controls.Add(this.lbxZingMp3History);
-            this.tabZingMp3.Controls.Add(this.txtLinkZingMp3);
-            this.tabZingMp3.Controls.Add(this.btnPlayZingMp3);
-            this.tabZingMp3.Location = new System.Drawing.Point(4, 34);
-            this.tabZingMp3.Name = "tabZingMp3";
-            this.tabZingMp3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabZingMp3.Size = new System.Drawing.Size(297, 557);
-            this.tabZingMp3.TabIndex = 2;
-            this.tabZingMp3.Text = "ZingMp3";
-            this.tabZingMp3.UseVisualStyleBackColor = true;
+            this.tabOnline.AllowDrop = true;
+            this.tabOnline.Controls.Add(this.progressDownload);
+            this.tabOnline.Controls.Add(this.linkDownloadZingMp3);
+            this.tabOnline.Controls.Add(this.label2);
+            this.tabOnline.Controls.Add(this.label1);
+            this.tabOnline.Controls.Add(this.lbxDownLoad);
+            this.tabOnline.Controls.Add(this.lbxPlayOnlineHistory);
+            this.tabOnline.Controls.Add(this.txtLink);
+            this.tabOnline.Controls.Add(this.btnPlayZingMp3);
+            this.tabOnline.Location = new System.Drawing.Point(4, 34);
+            this.tabOnline.Name = "tabOnline";
+            this.tabOnline.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOnline.Size = new System.Drawing.Size(297, 557);
+            this.tabOnline.TabIndex = 2;
+            this.tabOnline.Text = "Online";
+            this.tabOnline.UseVisualStyleBackColor = true;
             // 
             // progressDownload
             // 
@@ -410,13 +410,13 @@
             this.lbxDownLoad.Size = new System.Drawing.Size(284, 225);
             this.lbxDownLoad.TabIndex = 10;
             // 
-            // lbxZingMp3History
+            // lbxPlayOnlineHistory
             // 
-            this.lbxZingMp3History.FormattingEnabled = true;
-            this.lbxZingMp3History.Location = new System.Drawing.Point(9, 77);
-            this.lbxZingMp3History.Name = "lbxZingMp3History";
-            this.lbxZingMp3History.Size = new System.Drawing.Size(284, 225);
-            this.lbxZingMp3History.TabIndex = 10;
+            this.lbxPlayOnlineHistory.FormattingEnabled = true;
+            this.lbxPlayOnlineHistory.Location = new System.Drawing.Point(9, 77);
+            this.lbxPlayOnlineHistory.Name = "lbxPlayOnlineHistory";
+            this.lbxPlayOnlineHistory.Size = new System.Drawing.Size(284, 225);
+            this.lbxPlayOnlineHistory.TabIndex = 10;
             // 
             // btnOpen
             // 
@@ -486,8 +486,8 @@
             this.tabVideo.ResumeLayout(false);
             this.favoriteVideoMenu.ResumeLayout(false);
             this.currentPlayVideoMenu.ResumeLayout(false);
-            this.tabZingMp3.ResumeLayout(false);
-            this.tabZingMp3.PerformLayout();
+            this.tabOnline.ResumeLayout(false);
+            this.tabOnline.PerformLayout();
             this.historyPlayMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -499,12 +499,12 @@
         private AxWMPLib.AxWindowsMediaPlayer windowMedia;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button btnLoadMusic;
-        private System.Windows.Forms.TextBox txtLinkZingMp3;
+        private System.Windows.Forms.TextBox txtLink;
         private System.Windows.Forms.Button btnPlayZingMp3;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabMusic;
         private System.Windows.Forms.TabPage tabVideo;
-        private System.Windows.Forms.TabPage tabZingMp3;
+        private System.Windows.Forms.TabPage tabOnline;
         private System.Windows.Forms.ListBox lbxMusicFavorites;
         private System.Windows.Forms.ListBox lbxVideoFavorite;
         private System.Windows.Forms.ListBox lbxVideo;
@@ -522,7 +522,7 @@
         private System.Windows.Forms.ToolStripMenuItem showFolderMusicFavoriteMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lbxDownLoad;
-        private System.Windows.Forms.ListBox lbxZingMp3History;
+        private System.Windows.Forms.ListBox lbxPlayOnlineHistory;
         private System.Windows.Forms.ContextMenuStrip currentPlayVideoMenu;
         private System.Windows.Forms.ToolStripMenuItem playVideoMenu;
         private System.Windows.Forms.ToolStripMenuItem addFavoriteMenu;

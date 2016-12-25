@@ -38,6 +38,7 @@ namespace WindowMedia
             {
                 MessageBox.Show("User đã tồn tại");
                 this.resetFrom();
+
                 return;
             }
 

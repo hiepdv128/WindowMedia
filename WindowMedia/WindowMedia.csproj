@@ -84,12 +84,6 @@
     <Compile Include="Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="ZingMp3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ZingMp3.Designer.cs">
-      <DependentUpon>ZingMp3.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -110,9 +104,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ZingMp3.resx">
-      <DependentUpon>ZingMp3.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

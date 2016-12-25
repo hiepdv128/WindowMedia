@@ -21,14 +21,16 @@ namespace WindowMedia
         private List<string> HistoryMusicPlayed { get; set; }
         private List<string> HistoryVideoPlayed { get; set; }
         private string tabTag;
+        private string[] ExtentionSupports = { ".mp3", ".mp4", ".avi", ".mwn", ".3gp", ".mkv" };
 
         private ResourceTransporter resourceTransporter;
+        private string username = "test";
 
         private class TAG
         {
             public static string MUSIC = "music";
             public static string VIDEO = "video";
-            public static string ZING = "zing";
+            public static string ONLINE = "online";
         }
 
         public SimpleMedia()
@@ -44,6 +46,13 @@ namespace WindowMedia
             FavoriteVideos = new Dictionary<string, string>();
             HistoryMusicPlayed = new List<string>();
             HistoryVideoPlayed = new List<string>();
+
+            lblUsername.Text = this.username;
+        }
+
+        public void setUsername(string username)
+        {
+            this.username = username;
         }
 
         private void lbMusics_MouseClick(object sender, MouseEventArgs e)
@@ -378,12 +387,39 @@ namespace WindowMedia
 
         private void btnPlayZingMp3_Click(object sender, EventArgs e)
         {
-            String baseUrl = txtLinkZingMp3.Text.Trim();
-            baseUrl = baseUrl.Replace(".html", "");
-            String musicId = baseUrl.Substring(baseUrl.LastIndexOf("/") + 1);
+            tabTag = TAG.ONLINE;
 
-            HttpResponse<String> response = Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
-                .asString();
+            String baseUrl = txtLink.Text.Trim();
+
+            if (!baseUrl.Contains("mp3.zing.vn") && !ExtentionSupports.Contains(Path.GetExtension(baseUrl)))
+            {
+                MessageBox.Show("Url nhập không hợp lệ, vui lòng tìm url khác");
+                return;
+            }
+
+            if (baseUrl.Contains("mp3.zing.vn"))
+            {
+                this.playZingMp3(baseUrl);
+                return;
+            }
+
+            playUnkhowSource(baseUrl);
+        }
+
+        private void playUnkhowSource(String sourceUrl)
+        {
+            windowMedia.URL = sourceUrl;
+            windowMedia.Ctlcontrols.play();
+        }
+
+        private void playZingMp3(String zingUrl)
+        {
+            zingUrl = zingUrl.Replace(".html", "");
+            String musicId = zingUrl.Substring(zingUrl.LastIndexOf("/") + 1);
+
+            HttpResponse<String> response =
+                Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
+                    .asString();
 
             JObject jsonResponse = JObject.Parse(response.Body);
             String fileName = jsonResponse.GetValue("title").Value<String>();
@@ -403,7 +439,6 @@ namespace WindowMedia
 
             progressDownload.Value = 0;
             progressDownload.Hide();
-
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -413,12 +448,34 @@ namespace WindowMedia
 
         private void linkDownloadZingMp3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            String baseUrl = txtLinkZingMp3.Text.Trim();
-            baseUrl = baseUrl.Replace(".html", "");
-            String musicId = baseUrl.Substring(baseUrl.LastIndexOf("/") + 1);
+            String baseUrl = txtLink.Text.Trim();
 
-            HttpResponse<String> response = Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId + "%22}")
-                .asString();
+            if (!baseUrl.Contains("mp3.zing.vn") && !ExtentionSupports.Contains(Path.GetExtension(baseUrl)))
+            {
+                MessageBox.Show("Url nhập không hợp lệ, vui lòng tìm url khác");
+                return;
+            }
+
+            if (baseUrl.Contains("mp3.zing.vn"))
+            {
+                this.downloadFromZingMp3(baseUrl);
+                return;
+            }
+
+            downloadFromUnknowSource(baseUrl);
+
+        }
+
+
+        private void downloadFromZingMp3(string url)
+        {
+            url = url.Replace(".html", "");
+            String musicId = url.Substring(url.LastIndexOf("/") + 1);
+
+            HttpResponse<String> response =
+                Unirest.get("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={%22id%22:%22" + musicId +
+                            "%22}")
+                    .asString();
 
             JObject jsonResponse = JObject.Parse(response.Body);
             String fileName = jsonResponse.GetValue("title").Value<String>();
@@ -429,13 +486,20 @@ namespace WindowMedia
             progressDownload.Show();
 
             WebClient webclient = new WebClient();
-            webclient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-            webclient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            webclient.DownloadFileAsync(new Uri(downloadUrl), Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3");
-
+            webclient.DownloadFileCompleted += Completed;
+            webclient.DownloadProgressChanged += ProgressChanged;
+            webclient.DownloadFileAsync(new Uri(downloadUrl),
+                Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "/" + fileName + ".mp3");
         }
 
+        private void downloadFromUnknowSource(string url)
+        {
+            WebClient webclient = new WebClient();
+            webclient.DownloadFileCompleted += Completed;
+            webclient.DownloadProgressChanged += ProgressChanged;
+            webclient.DownloadFileAsync(new Uri(url),
+                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos) + "/" + Path.GetFileName(url));
 
+        }
     }
-
 }

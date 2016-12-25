@@ -18,7 +18,7 @@ namespace WindowMedia
         private void btnSignUp_Click(object sender, EventArgs e)
         {
             this.Hide();
-            
+
             new SignUp().Show();
         }
 
@@ -32,19 +32,23 @@ namespace WindowMedia
 
             String query = String.Format(
                 "SELECT * FROM Users WHERE Username='{0}' AND Password='{1}'",
-                txtUsernameSingIn.Text.Trim(),
-                txtPasswordSingIn.Text.Trim()
+                txtUsernameSingIn.Text,
+                txtPasswordSingIn.Text
             );
 
-            object queryResult = new SqlCommand(query, resourceTransporter.GetConnection()).ExecuteScalar();
-            
+            var queryResult = new SqlCommand(query, resourceTransporter.GetConnection()).ExecuteScalar();
+
             if (queryResult == null)
             {
                 MessageBox.Show("Sai tên tài khoản hoặc mật khẩu");
                 txtPasswordSingIn.Text = "";
+                return;
             }
 
-            new SimpleMedia().Show();
+            SimpleMedia media = new SimpleMedia();
+            media.setUsername(txtUsernameSingIn.Text);
+            media.Show();
+
             this.Close();
         }
 
@@ -53,6 +57,5 @@ namespace WindowMedia
             this.txtUsernameSingIn.Text = username;
             this.txtPasswordSingIn.Text = password;
         }
-
     }
 }

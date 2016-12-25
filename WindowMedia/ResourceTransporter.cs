@@ -6,7 +6,7 @@ namespace WindowMedia
 {
     class ResourceTransporter
     {
-        private string uri = "Data Source=(localdb)\\v11.0;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        private string uri = "Data Source=DESKTOP-MB70NCN\\SQLEXPRESS;Initial Catalog=Music;Integrated Security=True";
         private SqlConnection connection;
 
         public ResourceTransporter()
