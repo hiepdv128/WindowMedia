@@ -60,14 +60,14 @@
             this.txtName.Location = new System.Drawing.Point(110, 153);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(202, 20);
-            this.txtName.TabIndex = 2;
+            this.txtName.TabIndex = 3;
             // 
             // btnSingUp
             // 
             this.btnSingUp.Location = new System.Drawing.Point(214, 212);
             this.btnSingUp.Name = "btnSingUp";
             this.btnSingUp.Size = new System.Drawing.Size(75, 23);
-            this.btnSingUp.TabIndex = 3;
+            this.btnSingUp.TabIndex = 4;
             this.btnSingUp.Text = "Sign Up";
             this.btnSingUp.UseVisualStyleBackColor = true;
             this.btnSingUp.Click += new System.EventHandler(this.btnSingUp_Click);
@@ -77,7 +77,7 @@
             this.txtPasswordAgain.Location = new System.Drawing.Point(110, 111);
             this.txtPasswordAgain.Name = "txtPasswordAgain";
             this.txtPasswordAgain.Size = new System.Drawing.Size(202, 20);
-            this.txtPasswordAgain.TabIndex = 1;
+            this.txtPasswordAgain.TabIndex = 2;
             this.txtPasswordAgain.UseSystemPasswordChar = true;
             // 
             // btnClear
@@ -85,7 +85,7 @@
             this.btnClear.Location = new System.Drawing.Point(110, 212);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
-            this.btnClear.TabIndex = 3;
+            this.btnClear.TabIndex = 5;
             this.btnClear.Text = "Clear all";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
