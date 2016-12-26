@@ -776,5 +776,31 @@ namespace WindowMedia
             lbxDownLoad.Items.AddRange(downloadItems.Values.ToArray());
             lbxPlayOnlineHistory.Items.AddRange(playedOnline.Values.ToArray());
         }
+
+        private void lbxMusicFavorites_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbxMusicFavorites.SelectedItem == null)
+            {
+                return;
+            }
+
+            windowMedia.URL = lbxMusicFavorites.SelectedItem.ToString();
+            windowMedia.Ctlcontrols.play();
+
+            lbxMusicFavorites.ClearSelected();
+        }
+
+        private void lbxVideoFavorite_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbxVideoFavorite.SelectedItem == null)
+            {
+                return;
+            }
+
+            windowMedia.URL = lbxVideoFavorite.SelectedItem.ToString();
+            windowMedia.Ctlcontrols.play();
+
+            lbxMusicFavorites.ClearSelected();
+        }
     }
 }

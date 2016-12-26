@@ -19,3 +19,4 @@ E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.exe
 E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.pdb
 E:\Source\WindowMedia\WindowMedia\bin\Debug\SqlBulkTools.dll
 E:\Source\WindowMedia\WindowMedia\bin\Debug\SqlBulkTools.xml
+E:\Source\WindowMedia\WindowMedia\obj\Debug\WindowMedia.csprojResolveAssemblyReference.cache

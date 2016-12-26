@@ -73,6 +73,10 @@
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.windowMedia)).BeginInit();
             this.tabControl.SuspendLayout();
             this.currentPlayMusicMenu.SuspendLayout();
@@ -180,6 +184,9 @@
             // 
             // tabMusic
             // 
+            this.tabMusic.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.tabMusic.Controls.Add(this.label4);
+            this.tabMusic.Controls.Add(this.label3);
             this.tabMusic.Controls.Add(this.lbxMusics);
             this.tabMusic.Controls.Add(this.lbxMusicFavorites);
             this.tabMusic.Location = new System.Drawing.Point(4, 34);
@@ -188,17 +195,16 @@
             this.tabMusic.Size = new System.Drawing.Size(297, 551);
             this.tabMusic.TabIndex = 0;
             this.tabMusic.Text = "Music";
-            this.tabMusic.UseVisualStyleBackColor = true;
             // 
             // lbxMusics
             // 
             this.lbxMusics.AllowDrop = true;
             this.lbxMusics.ContextMenuStrip = this.currentPlayMusicMenu;
             this.lbxMusics.FormattingEnabled = true;
-            this.lbxMusics.Location = new System.Drawing.Point(5, 6);
+            this.lbxMusics.Location = new System.Drawing.Point(5, 32);
             this.lbxMusics.Name = "lbxMusics";
             this.lbxMusics.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbxMusics.Size = new System.Drawing.Size(289, 277);
+            this.lbxMusics.Size = new System.Drawing.Size(289, 251);
             this.lbxMusics.TabIndex = 0;
             this.lbxMusics.DoubleClick += new System.EventHandler(this.lbxMusics_DoubleClick);
             this.lbxMusics.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbxMusics_MouseDown);
@@ -212,6 +218,7 @@
             this.lbxMusicFavorites.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbxMusicFavorites.Size = new System.Drawing.Size(289, 212);
             this.lbxMusicFavorites.TabIndex = 0;
+            this.lbxMusicFavorites.DoubleClick += new System.EventHandler(this.lbxMusicFavorites_DoubleClick);
             // 
             // favoriteMusicMenu
             // 
@@ -245,6 +252,9 @@
             // 
             // tabVideo
             // 
+            this.tabVideo.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.tabVideo.Controls.Add(this.label5);
+            this.tabVideo.Controls.Add(this.label6);
             this.tabVideo.Controls.Add(this.lbxVideoFavorite);
             this.tabVideo.Controls.Add(this.lbxVideo);
             this.tabVideo.Location = new System.Drawing.Point(4, 34);
@@ -253,7 +263,6 @@
             this.tabVideo.Size = new System.Drawing.Size(297, 551);
             this.tabVideo.TabIndex = 1;
             this.tabVideo.Text = "Video";
-            this.tabVideo.UseVisualStyleBackColor = true;
             // 
             // lbxVideoFavorite
             // 
@@ -264,6 +273,7 @@
             this.lbxVideoFavorite.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbxVideoFavorite.Size = new System.Drawing.Size(289, 238);
             this.lbxVideoFavorite.TabIndex = 1;
+            this.lbxVideoFavorite.DoubleClick += new System.EventHandler(this.lbxVideoFavorite_DoubleClick);
             // 
             // favoriteVideoMenu
             // 
@@ -299,7 +309,7 @@
             // 
             this.lbxVideo.ContextMenuStrip = this.currentPlayVideoMenu;
             this.lbxVideo.FormattingEnabled = true;
-            this.lbxVideo.Location = new System.Drawing.Point(6, 43);
+            this.lbxVideo.Location = new System.Drawing.Point(5, 26);
             this.lbxVideo.Name = "lbxVideo";
             this.lbxVideo.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbxVideo.Size = new System.Drawing.Size(289, 238);
@@ -347,6 +357,7 @@
             // tabOnline
             // 
             this.tabOnline.AllowDrop = true;
+            this.tabOnline.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.tabOnline.Controls.Add(this.progressDownload);
             this.tabOnline.Controls.Add(this.linkDownloadZingMp3);
             this.tabOnline.Controls.Add(this.label2);
@@ -361,7 +372,6 @@
             this.tabOnline.Size = new System.Drawing.Size(297, 551);
             this.tabOnline.TabIndex = 2;
             this.tabOnline.Text = "Online";
-            this.tabOnline.UseVisualStyleBackColor = true;
             // 
             // progressDownload
             // 
@@ -386,20 +396,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(6, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 20);
+            this.label2.Size = new System.Drawing.Size(102, 20);
             this.label2.TabIndex = 11;
             this.label2.Text = "History play";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(6, 327);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 20);
+            this.label1.Size = new System.Drawing.Size(88, 20);
             this.label1.TabIndex = 11;
             this.label1.Text = "Download";
             // 
@@ -468,10 +478,51 @@
             this.toolStripMenuItem10.Size = new System.Drawing.Size(194, 22);
             this.toolStripMenuItem10.Text = "Go to folder";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(89, 20);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "All musics";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 304);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 20);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Favorite";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 290);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 20);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Favorite";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(7, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(89, 20);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "All Videos";
+            // 
             // SimpleMedia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1217, 646);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.btnOpen);
@@ -488,8 +539,10 @@
             this.tabControl.ResumeLayout(false);
             this.currentPlayMusicMenu.ResumeLayout(false);
             this.tabMusic.ResumeLayout(false);
+            this.tabMusic.PerformLayout();
             this.favoriteMusicMenu.ResumeLayout(false);
             this.tabVideo.ResumeLayout(false);
+            this.tabVideo.PerformLayout();
             this.favoriteVideoMenu.ResumeLayout(false);
             this.currentPlayVideoMenu.ResumeLayout(false);
             this.tabOnline.ResumeLayout(false);
@@ -545,5 +598,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar progressDownload;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

@@ -46,10 +46,10 @@ namespace WindowMedia
             }
 
             SimpleMedia media = new SimpleMedia();
-            media.setUser(txtUsernameSingIn.Text);
+//            media.setUser(txtUsernameSingIn.Text);
             media.Show();
 
-            this.Close();
+            this.Hide();
         }
 
         public void setUpUser(string username, string password)
